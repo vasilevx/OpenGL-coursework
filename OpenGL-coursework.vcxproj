@@ -122,10 +122,15 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\mesh.h" />
+    <ClInclude Include="src\model.h" />
     <ClInclude Include="src\shader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\fragmentShader.frag" />
+    <None Include="src\skyBox.frag" />
+    <None Include="src\skyBox.vert" />
     <None Include="src\vertexShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
