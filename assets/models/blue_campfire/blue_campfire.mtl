@@ -1,0 +1,35 @@
+# Blender MTL File: 'None'
+# Material Count: 3
+
+newmtl world/expansion02/doodads/generic/bonfire/bonfirenorthrend_.000
+Ns 0.000000
+Ka 0.250000 0.250000 0.250000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd blue_campfire_karazahnbonfirerockashblue.png
+
+newmtl world/expansion02/doodads/generic/bonfire/bonfirenorthrend_.001
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.098039 0.247059 0.894118
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd blue_campfire_t_vfx_fire_anim02_128_full_desat_blue.png
+
+newmtl world/expansion02/doodads/generic/bonfire/bonfirenorthrend_01bl
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.098039 0.490196 0.972549
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd blue_campfire_genericglow_alpha_128.png

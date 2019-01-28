@@ -5,22 +5,17 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
 #include "shader.h"
 #include "camera.h"
 #include "model.h"
-
-
 const unsigned int screen_width = 1600;
 const unsigned int screen_height = 900;
-
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 1.0f, 5.0f));
 float lastX = screen_width / 2.0f;
 float lastY = screen_height / 2.0f;
 bool firstMouse = true;
-float deltaTime = 0.0f;	// time between current frame and last frame
+float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-
 
 void processInput(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -111,74 +106,68 @@ int main(int argc, char* argv[]) {
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
 	glewInit();
 	glEnable(GL_DEPTH_TEST);
-	/*-------------------------------------------------------*/
+
 	Shader myShader("../src/vertexShader.vert", "../src/fragmentShader.frag");
 	Shader skyboxShader("../src/skyBox.vert", "../src/skyBox.frag");
-	/*-------------------------------------------------------*/	
-	Model ourModel("imp/imp.obj");
+	Model blueCampfire("../assets/models/blue_campfire/blue_campfire.obj");
+	Model firecamp("../assets/models/firecamp/firecamp.obj");
+	Model redCampfire("../assets/models/red_campfire/red_campfire.obj");
+	Model dwarf("../assets/models/dwarf/dwarf.obj");
+	Model demonForm("../assets/models/demonForm/demonForm.obj");
+	Model orb("../assets/models/orb/orb.obj");
+	Model portal("../assets/models/portal/portal.obj");
+	Model shooter("../assets/models/shooter/shooter.obj");
+	Model mage("../assets/models/mage/mage.obj");
+	Model frostbolt("../assets/models/frostbolt/frostbolt.obj");
+
 	float vertices[] = {
-		// positions          // normals           // texture coords
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+		// вершины          // грани      // текстуры
+		-10.5f, -0.1f, -10.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+		 10.5f, -0.1f, -10.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+		 10.5f,  0.0f, -10.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+		 10.5f,  0.0f, -10.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+		-10.5f,  0.0f, -10.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+		-10.5f, -0.1f, -10.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
 
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+		-10.5f, -0.1f,  10.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+		 10.5f, -0.1f,  10.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+		 10.5f,  0.0f,  10.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+		 10.5f,  0.0f,  10.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+		-10.5f,  0.0f,  10.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+		-10.5f, -0.1f,  10.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
 
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		-10.5f,  0.0f,  10.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		-10.5f,  0.0f, -10.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+		-10.5f, -0.1f, -10.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		-10.5f, -0.1f, -10.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		-10.5f, -0.1f,  10.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+		-10.5f,  0.0f,  10.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		 10.5f,  0.0f,  10.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		 10.5f,  0.0f, -10.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+		 10.5f, -0.1f, -10.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		 10.5f, -0.1f, -10.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		 10.5f, -0.1f,  10.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+		 10.5f,  0.0f,  10.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+		-10.5f, -0.1f, -10.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+		 10.5f, -0.1f, -10.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+		 10.5f, -0.1f,  10.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+		 10.5f, -0.1f,  10.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+		-10.5f, -0.1f,  10.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+		-10.5f, -0.1f, -10.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
 
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
-	};
-
-	glm::vec3 cubePositions[] = {
-		glm::vec3(0.0f,  0.0f,  0.0f),
-		glm::vec3(2.0f,  5.0f, -15.0f),
-		glm::vec3(-1.5f, -2.2f, -2.5f),
-		glm::vec3(-3.8f, -2.0f, -12.3f),
-		glm::vec3(2.4f, -0.4f, -3.5f),
-		glm::vec3(-1.7f,  3.0f, -7.5f),
-		glm::vec3(1.3f, -2.0f, -2.5f),
-		glm::vec3(1.5f,  2.0f, -2.5f),
-		glm::vec3(1.5f,  0.2f, -1.5f),
-		glm::vec3(-1.3f,  1.0f, -1.5f)
+		-10.5f,  0.0f, -10.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+		 10.5f,  0.0f, -10.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+		 10.5f,  0.0f,  10.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+		 10.5f,  0.0f,  10.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+		-10.5f,  0.0f,  10.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+		-10.5f,  0.0f, -10.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
 	};
 
 	float skyboxVertices[] = {
-		// positions          
 		-1.0f,  1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f,
 		 1.0f, -1.0f, -1.0f,
@@ -250,53 +239,92 @@ int main(int argc, char* argv[]) {
 	glGenVertexArrays(1, &lightVAO);
 	glBindVertexArray(lightVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	// note that we update the lamp's position attribute's stride to reflect the updated buffer data
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-
-	/*Текстуры------*/
-	GLuint texture1 = loadTexture("container2.png");
-	GLuint texture2 = loadTexture("container2_specular.png");
+	GLuint texture1 = loadTexture("../assets/textures/ground.jpg");
 	std::vector <std::string> faces {
-		
-		"mercury_ft.jpg",
-		"mercury_bk.jpg",
-
-		"mercury_up.jpg",
-		"mercury_dn.jpg",
-
-		"mercury_rt.jpg",//
-		"mercury_lf.jpg"//
+		"../assets/textures/mercury_ft.jpg",
+		"../assets/textures/mercury_bk.jpg",
+		"../assets/textures/mercury_up.jpg",
+		"../assets/textures/mercury_dn.jpg",
+		"../assets/textures/mercury_rt.jpg",
+		"../assets/textures/mercury_lf.jpg"
 	};
 	unsigned int cubemapTexture = loadCubemap(faces);
-	/*--------------*/
-
 	myShader.use();
 	myShader.setInt("material.diffuse", 0);
-	myShader.setInt("material.specular", 1);
-	
+	myShader.setInt("material.specular", 0);	
 
 	while (!glfwWindowShouldClose(window)) {
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-
 		processInput(window);
-
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 		myShader.use();
-		myShader.setVec3("light.direction", 0.0f, -5.0f, 0.0f);
+
 		myShader.setVec3("viewPos", camera.Position);
-		// light properties
-		myShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-		myShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-		myShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-		// material properties
 		myShader.setFloat("material.shininess", 32.0f);
+		myShader.setVec3("dirLight.direction", 0.0f, 1.0f, 0.0f);
+		myShader.setVec3("dirLight.ambient", 0.1f, 0.1f, 0.1f);
+		myShader.setVec3("dirLight.diffuse", 1.0f, 0.42f, 0.0f);
+		myShader.setVec3("dirLight.specular", 1.0f, 1.0f, 1.0f);
+
+		glm::vec3 pointLightPositions[] = {
+			glm::vec3(
+			    10 * cos(glfwGetTime() * 0.5),
+				3.0,
+				10 * sin(glfwGetTime()* 0.5)
+			),
+			glm::vec3(
+				9.5f,
+				0.0f,
+				-9.5f
+			),
+			glm::vec3(
+				9.5f,
+				0.0f,
+				9.5f
+			),
+			glm::vec3(
+				-9.5f,
+				0.0f,
+				-9.5f
+			)
+		};
+		myShader.setVec3("pointLights[0].position", pointLightPositions[0]);
+		myShader.setVec3("pointLights[0].ambient", 255.0f / 100.0f, 246.0f/ 100.0f, 91.0f / 100.0f);
+		myShader.setVec3("pointLights[0].diffuse", 1.0f, 1.0f, 1.0f);
+		myShader.setVec3("pointLights[0].specular", 255.0f / 100.0f, 246.0f / 100.0f, 91.0f / 100.0f);
+		myShader.setFloat("pointLights[0].constant", 1.0f);
+		myShader.setFloat("pointLights[0].linear", 0.22);
+		myShader.setFloat("pointLights[0].quadratic", 0.20);
+
+		myShader.setVec3("pointLights[1].position", pointLightPositions[1]);
+		myShader.setVec3("pointLights[1].ambient", 0.0f, 1.0f, 0.0f);
+		myShader.setVec3("pointLights[1].diffuse", 0.3f, 0.3f, 0.3f);
+		myShader.setVec3("pointLights[1].specular", 0.0f, 1.0f, 0.0f);
+		myShader.setFloat("pointLights[1].constant", 1.0f);
+		myShader.setFloat("pointLights[1].linear", 0.07);
+		myShader.setFloat("pointLights[1].quadratic", 0.017);
+
+		myShader.setVec3("pointLights[2].position", pointLightPositions[2]);
+		myShader.setVec3("pointLights[2].ambient", 1.0f, 0.0f, 0.0f);
+		myShader.setVec3("pointLights[2].diffuse", 0.3f, 0.3f, 0.3f);
+		myShader.setVec3("pointLights[2].specular", 1.0f, 0.0f, 0.0f);
+		myShader.setFloat("pointLights[2].constant", 1.0f);
+		myShader.setFloat("pointLights[2].linear", 0.07);
+		myShader.setFloat("pointLights[2].quadratic", 0.017);
+
+		myShader.setVec3("pointLights[3].position", pointLightPositions[3]);
+		myShader.setVec3("pointLights[3].ambient", 0.0f, 0.0f, 1.0f);
+		myShader.setVec3("pointLights[3].diffuse", 0.3f, 0.3f, 0.3f);
+		myShader.setVec3("pointLights[3].specular", 0.0f, 0.0f, 1.0f);
+		myShader.setFloat("pointLights[3].constant", 1.0f);
+		myShader.setFloat("pointLights[3].linear", 0.07);
+		myShader.setFloat("pointLights[3].quadratic", 0.017);
 
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 view = camera.GetViewMatrix();
@@ -305,41 +333,85 @@ int main(int argc, char* argv[]) {
 		myShader.setMat4("view", view);
 		myShader.setMat4("projection", projection);
 
-		model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+		model = glm::translate(model, pointLightPositions[1]);
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		myShader.setMat4("model", model);
-		ourModel.Draw(myShader);
+		firecamp.Draw(myShader);
 		
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, pointLightPositions[2]);
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		myShader.setMat4("model", model);
+		redCampfire.Draw(myShader);
 
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, pointLightPositions[0]);
+		model = glm::rotate(model, float(glfwGetTime() * 2.0), glm::vec3(0.0f, 1.0f, 0.0f)); 
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		myShader.setMat4("model", model);
+		orb.Draw(myShader);
+
+        model = glm::mat4(1.0f);
+		model = glm::translate(model, pointLightPositions[3]);
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		myShader.setMat4("model", model);
+		blueCampfire.Draw(myShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(7.5f, -2.0f, -5.0f));
+		model = glm::rotate(model, float(glm::radians(135.0f)), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		myShader.setMat4("model", model);
+		demonForm.Draw(myShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(4.0f, 0.0f, 5.0f));
+		model = glm::rotate(model, float(glm::radians(163.0f)), glm::vec3(0.0f, 1.0f, 0.0f));
+		myShader.setMat4("model", model);
+		shooter.Draw(myShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-4.0f, 0.0f, -4.0f));
+		model = glm::rotate(model, float(glm::radians(95.0f)), glm::vec3(0.0f, 1.0f, 0.0f));
+		myShader.setMat4("model", model);
+		mage.Draw(myShader);
+		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
+		model = glm::translate(model, glm::vec3(0.0f, 1.5f, 9.0f));
+		myShader.setMat4("model", model);
+		frostbolt.Draw(myShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(9.0f, 0.0f, -7.0f));
+		model = glm::rotate(model, float(glm::radians(-45.0f)), glm::vec3(0.0f, 1.0f, 0.0f));
+		myShader.setMat4("model", model);
+		dwarf.Draw(myShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-4.8f, 0.0f, 4.8f));
+		model = glm::rotate(model, float(glm::radians(135.0f)), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		myShader.setMat4("model", model);
+		portal.Draw(myShader);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texture2);
-
 		glBindVertexArray(VAO);
-		for (unsigned int i = 0; i < 10; i++) {
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, cubePositions[i]);
-			float angle = 20.0f * i;
-			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			myShader.setMat4("model", model);
-
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
+		model = glm::mat4(1.0f);
+		myShader.setMat4("model", model);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
 
-		glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+		glDepthFunc(GL_LEQUAL); 
 		skyboxShader.use();
-		view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
+		view = glm::mat4(glm::mat3(camera.GetViewMatrix())); 
 		skyboxShader.setMat4("view", view);
 		skyboxShader.setMat4("projection", projection);
-		// skybox cube
 		glBindVertexArray(skyboxVAO);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
-		glDepthFunc(GL_LESS); // set depth function back to default
+		glDepthFunc(GL_LESS);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -349,7 +421,6 @@ int main(int argc, char* argv[]) {
 	glDeleteVertexArrays(1, &skyboxVAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &skyboxVAO);
-
 	glfwTerminate();
 	return 0;
 }
